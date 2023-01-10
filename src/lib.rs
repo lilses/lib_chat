@@ -46,10 +46,10 @@ make_app65!(
          wallet: lib_wallet::QWallet,
          http_request: actix_web::HttpRequest| async move { handle(s, json, wallet).await }
     ],
-    NotificationError
+    ChatError
 );
 
-make_scope!("notification", [post, notification_route]);
+make_scope!("chat", [post, chat_route]);
 
 async fn handle(
     s: actix_web::web::Data<my_state::MyState>,
@@ -63,24 +63,24 @@ async fn handle(
             println!("hello {:?}", json.data);
             s.req
                 .post(&format!("{}/queue/notification", s.env.cwa_2_api))
-                .json::<INotification>(&json.data)
+                .json::<IChat>(&json.data)
                 .send()
                 .await
-                .map_err(NotificationError::from_general)
+                .map_err(ChatError::from_general)
                 .map_err(|x| {
                     tracing::error!("{:?}", x);
                     x
                 })?
                 .error_for_status()
-                .map_err(NotificationError::from_general)
+                .map_err(ChatError::from_general)
                 .map_err(|x| {
                     tracing::error!("{:?}", x);
                     x
                 })?;
-            Ok::<(), NotificationError>(())
+            Ok::<(), ChatError>(())
         }
     });
-    notification::postgres_query::insert(&s.sqlx_pool, &json.data)
+    chat::postgres_query::insert(&s.sqlx_pool, &json.data)
         .await
-        .map_err(NotificationError::from_general)
+        .map_err(ChatError::from_general)
 }
