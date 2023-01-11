@@ -6,15 +6,7 @@ use serde::*;
 
 make_error2!(ChatError);
 
-make_model22!(
-    QChat,
-    IChat,
-    OChat,
-    chat,
-    message: String,
-    room: i32,
-    wallet_id: i32
-);
+make_model22!(Q, I, O, chat, message: String, room: i32, wallet_id: i32);
 
 #[derive(Debug, serde::Deserialize, utoipa::IntoParams)]
 struct IdPathParam {
@@ -23,14 +15,14 @@ struct IdPathParam {
 
 make_app68!(
     [message: String, room: i32, wallet_id: i32],
-    chat_route,
+    route,
     "/chat",
     "/chat/{id}",
     "",
     "{id}",
-    OChat,
-    QChat,
-    IChat,
+    O,
+    Q,
+    I,
     ChatRequest,
     chat,
     [
@@ -42,13 +34,13 @@ make_app68!(
     ChatError
 );
 
-make_scope!("chat", [post, chat_route]);
+make_scope!("chat", [post, route]);
 
 async fn handle(
     s: actix_web::web::Data<my_state::MyState>,
     json: actix_web::web::Json<ChatRequest>,
     _: lib_wallet::QWallet,
-) -> Result<QChat, ChatError> {
+) -> Result<Q, ChatError> {
     chat::postgres_query::insert(&s.sqlx_pool, &json.data)
         .await
         .map_err(ChatError::from_general)
