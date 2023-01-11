@@ -6,7 +6,16 @@ use serde::*;
 
 make_error2!(ChatError);
 
-make_model22!(Q, I, O, chat, message: String, room: i32, wallet_id: i32);
+make_model22!(
+    Q,
+    I,
+    O,
+    chat,
+    message: String,
+    room: i32,
+    wallet_id: i32,
+    created_at: chrono::DateTime<chrono::Utc>
+);
 
 #[derive(Debug, serde::Deserialize, utoipa::IntoParams)]
 struct IdPathParam {
@@ -14,7 +23,12 @@ struct IdPathParam {
 }
 
 make_app68!(
-    [message: String, room: i32, wallet_id: i32],
+    [
+        message: String,
+        room: i32,
+        wallet_id: i32,
+        created_at: chrono::DateTime<chrono::Utc>
+    ],
     route,
     "/chat",
     "/chat/{id}",
