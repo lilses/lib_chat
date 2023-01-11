@@ -21,7 +21,7 @@ make_model22!(
 )]
 pub struct ChatRequest {
     pub data: IChat,
-    pub wallet_request: lib_wallet::WalletAuthId,
+    pub wallet_request: lib_auth_id::WalletAuthId,
 }
 
 #[derive(Debug, serde::Deserialize, utoipa::IntoParams)]
