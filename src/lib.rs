@@ -23,7 +23,7 @@ make_app80!(
     [
         |s: actix_web::web::Data<State>,
          json: actix_web::web::Json<route::IRequest>,
-         wallet: lib_wallet::QWallet,
+         wallet: lib_wallet::Q,
          http_request: actix_web::HttpRequest| async move { handle(s, json, wallet).await }
     ],
     ChatError
@@ -34,7 +34,7 @@ make_scope!("chat", [post, route]);
 async fn handle(
     s: actix_web::web::Data<State>,
     json: actix_web::web::Json<route::IRequest>,
-    _: lib_wallet::QWallet,
+    _: lib_wallet::Q,
 ) -> Result<Q, ChatError> {
     chat::postgres_query::insert(&s.sqlx_pool, &json.data)
         .await
