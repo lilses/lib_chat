@@ -40,7 +40,7 @@ make_app68!(
     ChatRequest,
     chat,
     [
-        |s: actix_web::web::Data<my_state::MyState>,
+        |s: actix_web::web::Data<State>,
          json: actix_web::web::Json<ChatRequest>,
          wallet: lib_wallet::QWallet,
          http_request: actix_web::HttpRequest| async move { handle(s, json, wallet).await }
@@ -51,7 +51,7 @@ make_app68!(
 make_scope!("chat", [post, route]);
 
 async fn handle(
-    s: actix_web::web::Data<my_state::MyState>,
+    s: actix_web::web::Data<State>,
     json: actix_web::web::Json<ChatRequest>,
     _: lib_wallet::QWallet,
 ) -> Result<Q, ChatError> {
