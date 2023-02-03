@@ -6,6 +6,7 @@ use my_state::State;
 use serde::*;
 
 make_error20!(ChatError, [actix]);
+pub use route::scope_service;
 
 make_app103!(
     i32,
