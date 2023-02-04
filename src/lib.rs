@@ -1,4 +1,4 @@
-use macros_create_app::{make_app103, make_app80};
+use macros_create_app::{make_app103, make_app104, make_app80};
 use macros_make_error::{make_error2, make_error20};
 use macros_make_model::make_model22;
 use macros_make_scope::make_scope;
@@ -6,9 +6,8 @@ use my_state::State;
 use serde::*;
 
 make_error20!(ChatError, [actix]);
-pub use route::scope_service;
 
-make_app103!(
+make_app104!(
     i32,
     [
         message: String,
