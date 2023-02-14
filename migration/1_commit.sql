@@ -7,6 +7,19 @@ create table chat
     created_at timestamp with time zone default now() not null
 );
 
+create function notify_chat() returns trigger
+    language plpgsql
+as
+$$
+BEGIN
+    PERFORM pg_notify(
+            'notify_chat',
+            row_to_json(NEW)::text
+        );
+    RETURN NEW;
+END;
+$$;
+
 create trigger chat_insert
     after insert
     on chat
